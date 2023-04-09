@@ -3,13 +3,13 @@ import * as WebSocket from 'ws'
 import amqp from 'amqplib'
 
 const clipboardQueue = 'clipboard-queue'
-const clipboardMessage = 'clipboard-message'
+const clipboardExchange = 'clipboard-message'
 
 const main = async () => {
 	const connection = await amqp.connect('amqp://localhost')
 	const channel = await connection.createChannel()
-
 	await channel.assertQueue(clipboardQueue)
+	await channel.assertExchange(clipboardExchange, 'topic')
 
 	const server = http.createServer()
 	const wss = new WebSocket.Server({ server })
@@ -20,7 +20,7 @@ const main = async () => {
 
 			wss.clients.forEach(async client => {
 				if (client.readyState && client != ws) {
-					channel.publish(clipboardMessage, 'clipboard', Buffer.from(message))
+					channel.publish(clipboardExchange, 'clipboard', Buffer.from(message))
 					client.send(message)
 				}
 			})
