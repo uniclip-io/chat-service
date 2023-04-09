@@ -5,10 +5,8 @@ const server = http.createServer()
 const wss = new WebSocket.Server({ server })
 
 wss.on('connection', (ws: WebSocket) => {
-	ws.send('Hi there, I am a WebSocket server')
-
 	ws.on('message', (message: string) => {
-		console.log(message.toString())
+		console.log(JSON.parse(message))
 
 		wss.clients.forEach(client => {
 			if (client.readyState && client != ws) {
@@ -18,4 +16,4 @@ wss.on('connection', (ws: WebSocket) => {
 	})
 })
 
-server.listen(8000, '192.168.0.200', () => console.log('Started!'))
+server.listen(8000, () => console.log('Started!'))
