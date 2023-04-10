@@ -1,6 +1,8 @@
 import http from 'http'
 import * as WebSocket from 'ws'
 import amqp from 'amqplib'
+import Clipboard from './types/clipboard'
+import { File } from './types/clipboard'
 
 const clipboardQueue = 'clipboard-queue'
 const clipboardExchange = 'clipboard-message'
@@ -16,18 +18,25 @@ const main = async () => {
 
 	wss.on('connection', (ws: WebSocket) => {
 		ws.on('message', (message: string) => {
-			console.log(JSON.parse(message))
+			const clipboard = JSON.parse(message) as Clipboard
+			console.log(clipboard)
 
 			wss.clients.forEach(async client => {
 				if (client.readyState && client != ws) {
-					channel.publish(clipboardExchange, 'clipboard', Buffer.from(message))
+					const { type, content } = clipboard
+					const dto = {
+						type,
+						content: type === 'text' ? content : (content as File).contentId
+					}
+					const buffer = Buffer.from(JSON.stringify(dto))
+					channel.publish(clipboardExchange, 'clipboard', buffer)
 					client.send(message)
 				}
 			})
 		})
 	})
 
-	server.listen(8000)
+	server.listen(8000, () => console.log('Started!'))
 }
 
 main()
