@@ -19,24 +19,24 @@ const main = async () => {
 	wss.on('connection', (ws: WebSocket) => {
 		ws.on('message', (message: string) => {
 			const clipboard = JSON.parse(message) as Clipboard
-			console.log(clipboard)
+
+			const { type, content } = clipboard
+			const dto = {
+				type,
+				content: type === 'text' ? content : (content as File).contentId
+			}
+			const buffer = Buffer.from(JSON.stringify(dto))
+			channel.publish(clipboardExchange, 'clipboard', buffer)
 
 			wss.clients.forEach(async client => {
 				if (client.readyState && client != ws) {
-					const { type, content } = clipboard
-					const dto = {
-						type,
-						content: type === 'text' ? content : (content as File).contentId
-					}
-					const buffer = Buffer.from(JSON.stringify(dto))
-					channel.publish(clipboardExchange, 'clipboard', buffer)
 					client.send(message)
 				}
 			})
 		})
 	})
 
-	server.listen(8000, () => console.log('Started!'))
+	server.listen(8000, '192.168.0.200', () => console.log('Started!'))
 }
 
 main()
