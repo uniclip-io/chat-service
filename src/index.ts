@@ -5,7 +5,10 @@ import amqp from 'amqplib'
 const clipboardQueue = 'clipboard-queue'
 
 const main = async () => {
-	const connection = await amqp.connect('amqp://localhost')
+	const { RABBITMQ_USERNAME, RABBITMQ_PASSWORD, RABBITMQ_HOSTNAME } = process.env
+	const uri = `amqps://${RABBITMQ_USERNAME}:${RABBITMQ_PASSWORD}@${RABBITMQ_HOSTNAME}`
+	const connection = await amqp.connect(uri)
+
 	const channel = await connection.createChannel()
 	await channel.assertQueue(clipboardQueue)
 
