@@ -1,7 +1,7 @@
 import express from 'express'
 import addWsRoute from 'express-ws'
-import { ExpressWebSocket } from './global'
 import amqp from 'amqplib'
+import { ExpressWebSocket } from './types/global'
 import Record from './types/record'
 import Client from './types/client'
 
@@ -39,7 +39,6 @@ const main = async () => {
 	})
 
 	app.ws('/:id', (ws, req) => {
-		console.log('New connection:', req.params.id)
 		clients.push({
 			id: req.params.id,
 			socket: ws
