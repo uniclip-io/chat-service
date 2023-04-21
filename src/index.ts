@@ -27,10 +27,8 @@ const main = async () => {
 			const record = JSON.parse(raw) as Record
 			console.log(record)
 
-			const sender = '3fa85f64-5717-4562-b3fc-2c963f66afa6' // TODO - record.userId
-
 			for (const client of clients) {
-				if (client.id === sender) {
+				if (client.id === record.userid) {
 					client.socket.send(raw)
 				}
 			}
