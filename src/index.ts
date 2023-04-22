@@ -28,7 +28,7 @@ const main = async () => {
 			console.log(record)
 
 			for (const client of clients) {
-				if (client.id === record.userid) {
+				if (client.id === record.userId) {
 					client.socket.send(raw)
 				}
 			}

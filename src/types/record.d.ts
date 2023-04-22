@@ -1,7 +1,7 @@
 export type RecordType = 'text' | 'file' | 'folder' | 'diverse'
 
 export default interface Record {
-	userid: string // not `userId` because of message parsing
+	userId: string
 	id: string
 	date: string
 	type: RecordType
