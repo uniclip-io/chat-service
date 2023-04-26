@@ -21,7 +21,10 @@ jobs:
                   aws-region: eu-north-1
 
             - name: Install kubectl
-              uses: actions-hub/kubectl@master
+              uses: docker://lachlanevenson/k8s-kubectl:v1.22.0
+              with:
+                  entrypoint: /bin/sh
+                  args: -c 'echo -e "$KUBECONFIG" > kubeconfig && chmod 600 kubeconfig && kubectl version'
 
             - name: Create secrets
               run: |
