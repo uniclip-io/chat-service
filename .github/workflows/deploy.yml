@@ -29,7 +29,7 @@ jobs:
                   ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
                   ECR_REPOSITORY: uniclip/clipboard-api
               run: |
-                  docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:latest -f .
+                  docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:latest .
                   docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
 
             - name: Install kubectl
