@@ -49,4 +49,6 @@ jobs:
             #           --from-literal=RABBITMQ_USERNAME=${{ secrets.RABBITMQ_USERNAME }}
 
             - name: Deploy to EKS
+              env: 
+                KUBECONFIG: /home/runner/.kube/config
               run: kubectl apply -f ./k8s/manifests/
