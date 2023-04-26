@@ -1,4 +1,4 @@
-name: CI Pipeline
+name: CD Pipeline
 
 on:
     push:
@@ -36,7 +36,7 @@ jobs:
               id: kubectl-install
               uses: azure/setup-kubectl@v1
               with:
-                  version: 'v1.21.3'
+                  version: 'v1.25'
 
             - name: Update kubeconfig
               run: aws eks update-kubeconfig --name uniclip --region eu-north-1
@@ -49,4 +49,4 @@ jobs:
                       --from-literal=RABBITMQ_USERNAME=${{ secrets.RABBITMQ_USERNAME }}
 
             - name: Deploy to EKS
-              run: kubectl apply -f ./k8s/manifest/
+              run: kubectl apply -f ./k8s/manifests/
