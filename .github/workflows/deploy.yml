@@ -41,6 +41,9 @@ jobs:
             - name: Update kubeconfig
               run: aws eks update-kubeconfig --name uniclip --region eu-north-1
 
+            - name: Verify kubeconfig
+              run: kubectl config view
+
             # - name: Create secrets
             #   run: |
             #       kubectl create secret generic secrets \
