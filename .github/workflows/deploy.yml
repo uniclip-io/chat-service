@@ -20,11 +20,15 @@ jobs:
                   aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
                   aws-region: eu-north-1
 
-            - name: Configure kubectl
-              uses: dawidd6/action-kubectl@v1.2.1
-              with:
-                  version: '1.22.0'
-                  kubectl_version: 'latest'
+            - name: Install kubectl
+            - uses: actions-hub/kubectl@master
+
+            - name: Create secrets
+              run: |
+                  kubectl create secret generic secrets \
+                      --from-literal=RABBITMQ_HOSTNAME=${{ secrets.RABBITMQ_HOSTNAME }} \
+                      --from-literal=RABBITMQ_PASSWORD=${{ secrets.RABBITMQ_PASSWORD }} \
+                      --from-literal=RABBITMQ_USERNAME=${{ secrets.RABBITMQ_USERNAME }}
 
             - name: Deploy to EKS
               run: |
