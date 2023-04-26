@@ -1,4 +1,4 @@
-name: Deploy to Amazon EKS
+name: CI Pipeline
 
 on:
     push:
@@ -20,16 +20,26 @@ jobs:
                   aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
                   aws-region: eu-north-1
 
+            - name: Login to ECR
+              id: login-ecr
+              uses: aws-actions/amazon-ecr-login@v1
+
+            - name: Push to ECR
+              env:
+                  ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+                  ECR_REPOSITORY: uniclip/clipboard-api
+              run: |
+                  docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:latest -f ClipboardApi/Dockerfile .
+                  docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
+
             - name: Install kubectl
-              uses: docker://lachlanevenson/k8s-kubectl:v1.22.0
+              id: kubectl-install
+              uses: azure/setup-kubectl@v1
               with:
-                  entrypoint: /bin/sh
-                  args: >-
-                      -c "
-                          echo \"$KUBECONFIG\" > kubeconfig &&
-                          chmod 600 kubeconfig &&
-                          kubectl version
-                      "
+                  version: 'v1.21.3'
+
+            - name: Update kubeconfig
+              run: aws eks update-kubeconfig --name uniclip --region eu-north-1
 
             - name: Create secrets
               run: |
@@ -39,5 +49,4 @@ jobs:
                       --from-literal=RABBITMQ_USERNAME=${{ secrets.RABBITMQ_USERNAME }}
 
             - name: Deploy to EKS
-              run: |
-                  kubectl apply -f ./k8s/manifests/
+              run: kubectl apply -f ./k8s/manifest/
