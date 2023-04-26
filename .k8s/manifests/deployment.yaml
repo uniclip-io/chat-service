@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.28.0 (HEAD)
+    creationTimestamp: null
+    labels:
+        io.kompose.service: dispatch-service
+    name: dispatch-service
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            io.kompose.service: dispatch-service
+    strategy: {}
+    template:
+        metadata:
+            annotations:
+                kompose.cmd: kompose convert
+                kompose.version: 1.28.0 (HEAD)
+            creationTimestamp: null
+            labels:
+                io.kompose.network/deployment-default: 'true'
+                io.kompose.service: dispatch-service
+        spec:
+            containers:
+                - env:
+                      - name: RABBITMQ_HOSTNAME
+                        value: b-57171018-cd0b-41bc-9c91-214b43c72ff9.mq.eu-north-1.amazonaws.com:5671
+                      - name: RABBITMQ_PASSWORD
+                        value: LCjirszFaWQ1enKkCAWLlSECeRGxxz5Zc0O4
+                      - name: RABBITMQ_USERNAME
+                        value: uniclip
+                  image: uniclip/dispatch-service:latest
+                  name: dispatch-service
+                  ports:
+                      - containerPort: 8000
+                  resources: {}
+                  imagePullPolicy: Never
+            restartPolicy: Always
+status: {}
