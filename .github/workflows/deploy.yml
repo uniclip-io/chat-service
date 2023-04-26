@@ -21,7 +21,9 @@ jobs:
                   aws-region: eu-north-1
 
             - name: Install kubectl
-            - uses: actions-hub/kubectl@master
+              uses: actions-hub/kubectl@master
+
+            - name: Create secrets
               run: |
                   kubectl create secret generic secrets \
                       --from-literal=RABBITMQ_HOSTNAME=${{ secrets.RABBITMQ_HOSTNAME }} \
