@@ -5,6 +5,10 @@ import { ExpressWebSocket } from './types/global'
 import Record from './types/record'
 import Client from './types/client'
 
+if (process.env.NODE_ENV === 'development') {
+	require('dotenv').config()
+}
+
 const clipboardQueue = 'clipboard-queue'
 
 const app = express() as ExpressWebSocket
