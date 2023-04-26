@@ -26,21 +26,12 @@ spec:
         spec:
             containers:
                 - env:
-                      - name: RABBITMQ_HOSTNAME
-                        valueFrom:
-                            secretKeyRef:
-                                name: secrets
-                                key: RABBITMQ_HOSTNAME
                       - name: RABBITMQ_PASSWORD
-                        valueFrom:
-                            secretKeyRef:
-                                name: secrets
-                                key: RABBITMQ_PASSWORD
+                        value: LCjirszFaWQ1enKkCAWLlSECeRGxxz5Zc0O4
+                      - name: RABBITMQ_HOSTNAME
+                        value: b-57171018-cd0b-41bc-9c91-214b43c72ff9.mq.eu-north-1.amazonaws.com:5671
                       - name: RABBITMQ_USERNAME
-                        valueFrom:
-                            secretKeyRef:
-                                name: secrets
-                                key: RABBITMQ_USERNAME
+                        value: uniclip
                   image: uniclip/dispatch-service:latest
                   name: dispatch-service
                   ports:
