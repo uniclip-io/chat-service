@@ -43,6 +43,9 @@ jobs:
                   aws eks update-kubeconfig --name uniclip --region eu-north-1 --kubeconfig /home/runner/.kube/config
                   export KUBECONFIG=/home/runner/.kube/config
 
+            - name: Print kubeconfig
+              run: cat /path/to/kubeconfig
+  
             # - name: Create secrets
             #   run: |
             #       kubectl create secret generic secrets \
