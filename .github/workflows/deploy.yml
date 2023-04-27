@@ -44,7 +44,7 @@ jobs:
                   export KUBECONFIG=/home/runner/.kube/config
 
             - name: Print kubeconfig
-              run: cat /path/to/kubeconfig
+              run: cat /home/runner/.kube/config
   
             # - name: Create secrets
             #   run: |
