@@ -39,12 +39,9 @@ jobs:
                   version: v1.27.1
 
             - name: Update kubeconfig
-              run: aws eks update-kubeconfig --name uniclip --region eu-north-1
-
-            - name: Verify kubeconfig
               run: |
-                  kubectl version
-                  kubectl config view
+                  aws eks update-kubeconfig --name uniclip --region eu-north-1 --kubeconfig /home/runner/.kube/config
+                  export KUBECONFIG=/home/runner/.kube/config
 
             # - name: Create secrets
             #   run: |
@@ -54,6 +51,4 @@ jobs:
             #           --from-literal=RABBITMQ_USERNAME=${{ secrets.RABBITMQ_USERNAME }}
 
             - name: Deploy to EKS
-              env: 
-                KUBECONFIG: /home/runner/.kube/config
               run: kubectl apply -f ./k8s/manifests/
