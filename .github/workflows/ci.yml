@@ -53,4 +53,4 @@ jobs:
 
       - name: Run new task
         run: |
-          aws ecs update-service --cluster ${{ secrets.AWS_CLUSTER }} --service ${{ secrets.AWS_SERVICE }} --force-new-deployment --task-definition DispatchApiTask
+          aws ecs update-service --cluster ${{ secrets.AWS_CLUSTER }} --service ${{ secrets.AWS_SERVICE }} --force-new-deployment --task-definition DispatchServiceTask
