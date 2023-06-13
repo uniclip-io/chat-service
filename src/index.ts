@@ -47,7 +47,7 @@ const main = async () => {
 		})
 	})
 
-	app.listen(8000, () => console.log('Started!'))
+	app.listen(80, () => console.log('Started!'))
 }
 
 main()
